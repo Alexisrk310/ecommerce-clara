@@ -13,6 +13,18 @@ const Login = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error('Por favor ingresa un correo electrónico válido');
+      return;
+    }
+    
+    if (password.length <= 6) {
+      toast.error('La contraseña debe tener más de 6 caracteres');
+      return;
+    }
+
     setLoading(true);
 
     try {

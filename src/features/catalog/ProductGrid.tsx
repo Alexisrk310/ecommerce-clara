@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../../components/ui/ProductCard';
-import { Search, Loader2 } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { database } from '../../api/database';
 import type { Product } from '../../api/database';
 
