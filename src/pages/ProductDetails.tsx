@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ShoppingBag, ChevronLeft, Heart, Share2, ShieldCheck, Truck, Loader2 } from 'lucide-react';
+import { ShoppingBag, ChevronLeft, Heart, Share2, ShieldCheck, Truck, Loader2, Smartphone, CreditCard, Banknote } from 'lucide-react';
 import { useCart } from '../features/cart/CartContext';
 import { formatPrice } from '../utils/format';
 import { toast } from 'react-hot-toast';
@@ -14,6 +14,61 @@ const ProductDetails = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string | undefined>();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    const checkFavorite = () => {
+      if (id) {
+        try {
+          const favs = JSON.parse(localStorage.getItem('clara_favorites') || '[]');
+          setIsFavorite(favs.includes(id));
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    };
+    checkFavorite();
+    window.addEventListener('favoritesUpdated', checkFavorite);
+    return () => window.removeEventListener('favoritesUpdated', checkFavorite);
+  }, [id]);
+
+  const toggleFavorite = () => {
+    if (!id) return;
+    try {
+      const favs = JSON.parse(localStorage.getItem('clara_favorites') || '[]');
+      let newFavs;
+      if (isFavorite) {
+        newFavs = favs.filter((favId: string) => favId !== id);
+        toast.success('Eliminado de favoritos');
+      } else {
+        newFavs = [...favs, id];
+        toast.success('Añadido a favoritos', { iconTheme: { primary: '#f06292', secondary: '#fff' } });
+      }
+      localStorage.setItem('clara_favorites', JSON.stringify(newFavs));
+      setIsFavorite(!isFavorite);
+      window.dispatchEvent(new Event('favoritesUpdated'));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      toast.success('¡Enlace copiado al portapapeles!', {
+        style: {
+          background: '#1a1a1a',
+          color: '#fff',
+          borderRadius: '0',
+          fontSize: '12px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+        }
+      });
+    } catch (err) {
+      console.error('Error copiando al portapapeles: ', err);
+    }
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -100,9 +155,9 @@ const ProductDetails = () => {
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="space-y-4"
+            className="flex justify-center"
           >
-            <div className="aspect-[3/4] bg-clara-gray overflow-hidden">
+            <div className="aspect-3/4 bg-clara-gray overflow-hidden w-full max-w-sm rounded-sm">
               <img 
                 src={product.image} 
                 alt={product.name}
@@ -182,10 +237,18 @@ const ProductDetails = () => {
               </button>
               
               <div className="grid grid-cols-2 gap-4">
-                <button className="py-4 border border-clara-black/10 flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest hover:border-clara-pink-300 transition-colors">
-                  <Heart size={14} /> Wishlist
+                <button 
+                  onClick={toggleFavorite}
+                  className={`py-4 border flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest transition-colors ${
+                    isFavorite ? 'border-red-500 text-red-500 bg-red-50' : 'border-clara-black/10 hover:border-clara-pink-300'
+                  }`}
+                >
+                  <Heart size={14} fill={isFavorite ? 'currentColor' : 'none'} /> Favoritos
                 </button>
-                <button className="py-4 border border-clara-black/10 flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest hover:border-clara-pink-300 transition-colors">
+                <button 
+                  onClick={handleShare}
+                  className="py-4 border border-clara-black/10 flex items-center justify-center gap-2 text-[10px] uppercase tracking-widest hover:border-clara-pink-300 transition-colors"
+                >
                   <Share2 size={14} /> Compartir
                 </button>
               </div>
@@ -199,7 +262,7 @@ const ProductDetails = () => {
                 </div>
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-wider">Envío Nacional</h4>
-                  <p className="text-[10px] text-clara-black/40">Gratis en Cartagena</p>
+                  <p className="text-[10px] text-clara-black/40">Zonas de cobertura en toda Colombia</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -209,6 +272,20 @@ const ProductDetails = () => {
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-wider">Pago Seguro</h4>
                   <p className="text-[10px] text-clara-black/40">Pedido directo a WhatsApp</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-clara-gray flex items-center justify-center text-clara-black/60">
+                  <CreditCard size={18} />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-xs font-bold uppercase tracking-wider">Métodos de Pago</h4>
+                  <p className="text-[10px] text-clara-black/40">Múltiples opciones disponibles</p>
+                  <div className="flex gap-2 mt-2 text-clara-black/60 items-center">
+                    <Smartphone size={14} />
+                    <Banknote size={14} />
+                    <span className="text-[10px] uppercase font-bold text-clara-black/40 tracking-widest ml-1">Nequi · Bancolombia · Daviplata · Mercado Pago · Efectivo</span>
+                  </div>
                 </div>
               </div>
             </div>

@@ -39,14 +39,14 @@ const Home = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <span className="inline-block text-clara-pink-500 font-medium tracking-[0.2em] uppercase text-sm mb-4">
-              Colección Primavera 2026
+              ESENCIA, BELLEZA & ESTILO
             </span>
             <h1 className="text-6xl md:text-8xl font-serif text-clara-black leading-[1.1] mb-8">
-              Moda que <br />
-              <span className="italic text-clara-pink-400">cuenta tu historia</span>
+              Realza tu magia <br />
+              <span className="italic text-clara-pink-400">en cada detalle</span>
             </h1>
             <p className="text-lg text-clara-black/60 max-w-md mb-10 leading-relaxed">
-              Descubre una selección curada de prendas y accesorios diseñados para la mujer moderna que valora la elegancia y la exclusividad.
+              Descubre nuestra fascinante colección: moda exclusiva, maquillajes radiantes, deliciosas colonias, splash y cuidado de la piel. Encuentra todo lo que necesitas para deslumbrar y mimarte todos los días.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/catalogo" className="bg-clara-black text-white px-8 py-4 rounded-none uppercase tracking-widest text-sm hover:bg-clara-pink-500 transition-luxury flex items-center gap-3">
@@ -64,7 +64,7 @@ const Home = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-            className="relative aspect-[3/4] max-w-md mx-auto"
+            className="relative aspect-3/4 max-w-md mx-auto"
           >
             <div className="absolute -inset-4 border border-clara-pink-200 -z-10 translate-x-8 translate-y-8" />
             <img

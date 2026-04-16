@@ -22,7 +22,7 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-clara-black/40 backdrop-blur-sm z-[70]"
+            className="fixed inset-0 bg-clara-black/40 backdrop-blur-sm z-70"
           />
 
           {/* Drawer */}
@@ -31,7 +31,7 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-white z-[80] shadow-2xl flex flex-col"
+            className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-white z-80 shadow-2xl flex flex-col"
           >
             {/* Header */}
             <div className="p-6 border-b border-clara-pink-100 flex justify-between items-center">
@@ -45,14 +45,14 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
             </div>
 
             {/* Items List */}
-            <div className="flex-grow overflow-y-auto p-6 space-y-6">
+            <div className="grow overflow-y-auto p-6 space-y-6">
               {cartItems.length > 0 ? (
                 cartItems.map((item) => (
                   <div key={item.id} className="flex gap-4 group">
-                    <div className="w-20 h-24 bg-clara-gray flex-shrink-0">
+                    <div className="w-20 h-24 bg-clara-gray shrink-0">
                       <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                     </div>
-                    <div className="flex-grow">
+                    <div className="grow">
                       <div className="flex justify-between items-start">
                         <h3 className="text-sm font-medium pr-8">{item.name}</h3>
                         <button 

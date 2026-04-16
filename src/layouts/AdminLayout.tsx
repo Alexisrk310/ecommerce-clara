@@ -1,5 +1,5 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, LogOut, ChevronLeft } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, LogOut, ChevronLeft, Store } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { useAuth } from '../features/auth/AuthContext';
 import { toast } from 'react-hot-toast';
@@ -41,7 +41,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           <p className="text-[10px] uppercase tracking-widest text-clara-pink-400 mt-2">Panel de Control</p>
         </div>
 
-        <nav className="flex-grow px-4 space-y-2">
+        <nav className="grow px-4 space-y-2">
           {menuItems.map((item) => (
             <NavLink
               key={item.name}
@@ -62,7 +62,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           ))}
         </nav>
 
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-white/10 space-y-2">
+          <Link 
+            to="/"
+            className="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white w-full transition-colors group"
+          >
+            <Store size={18} className="group-hover:-translate-x-1 transition-transform" />
+            Ir a la Tienda
+          </Link>
           <button 
             onClick={handleSignOut}
             className="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white w-full transition-colors group"
@@ -74,7 +81,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-grow flex flex-col">
+      <main className="grow flex flex-col">
         <header className="h-16 bg-white border-b border-clara-pink-100 flex items-center justify-between px-8">
           <h1 className="text-lg font-serif">Administración</h1>
           <div className="flex items-center gap-4">

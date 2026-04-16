@@ -17,7 +17,8 @@ const Checkout = () => {
     const formattedTotal = formatPrice(total);
     const message = `¡Hola Donde Clara! 👋 Quiero realizar un pedido:%0A%0A*Productos:*%0A${itemsList}%0A%0A*Total:* ${formattedTotal}%0A%0A*Mis Datos:*%0A- Nombre: ${(e.target as any).nombre.value}%0A- Dirección: ${(e.target as any).direccion.value}%0A- Barrio: ${(e.target as any).barrio.value}%0A%0A¿Me podrían confirmar la disponibilidad y los pasos para el pago? ✨`;
     
-    const whatsappUrl = `https://wa.me/573000000000?text=${message}`; // Replace with real number
+    const phoneNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '573013439509';
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
     
     window.open(whatsappUrl, '_blank');
     navigate('/pedido-confirmado');
@@ -84,10 +85,10 @@ const Checkout = () => {
               <div className="max-h-[400px] overflow-y-auto space-y-4 pr-2 scrollbar-thin">
                 {cartItems.map((item) => (
                   <div key={item.id} className="flex gap-4">
-                    <div className="w-16 h-20 bg-clara-gray flex-shrink-0">
+                    <div className="w-16 h-20 bg-clara-gray shrink-0">
                       <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                     </div>
-                    <div className="flex-grow">
+                    <div className="grow">
                       <h4 className="text-[10px] font-bold uppercase tracking-wider">{item.name}</h4>
                       <p className="text-[10px] text-clara-black/40 mt-1">Cant: {item.quantity}{item.size ? ` · Talla: ${item.size}` : ''}</p>
                       <p className="text-xs font-medium mt-1">{formatPrice(item.price * item.quantity)}</p>

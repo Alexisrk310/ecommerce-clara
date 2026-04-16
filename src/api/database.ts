@@ -17,6 +17,7 @@ export interface Product {
   category_id: string;
   stock: number;
   active?: boolean;
+  featured?: boolean;
   sizes?: string[];
   created_at?: string;
   category?: {

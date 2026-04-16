@@ -94,7 +94,7 @@ const Categories = () => {
       {/* Table */}
       <div className="bg-white shadow-premium overflow-hidden min-h-[300px]">
         <div className="p-6 border-b border-clara-gray flex items-center justify-between gap-4">
-          <div className="relative flex-grow max-w-md">
+          <div className="relative grow max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-clara-black/20" size={16} />
             <input 
               type="text" 
@@ -160,7 +160,7 @@ const Categories = () => {
       {/* Simple Modal */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-[110] flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-110 flex items-center justify-center p-4">
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

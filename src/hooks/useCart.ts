@@ -10,6 +10,7 @@ interface CartItem {
 }
 
 export const useCart = () => {
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>(() => {
     try {
       const saved = localStorage.getItem('donde_clara_cart');
@@ -33,9 +34,13 @@ export const useCart = () => {
           item.id === product.id && item.size === product.size ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      return [...prev, { ...product, quantity: 1 }];
-    });
+        return [...prev, { ...product, quantity: 1 }];
+      });
+    setIsCartOpen(true);
   };
+
+  const openCart = () => setIsCartOpen(true);
+  const closeCart = () => setIsCartOpen(false);
 
   const removeFromCart = (id: string, size?: string) => {
     setCartItems((prev) => prev.filter((item) => !(item.id === id && item.size === size)));
@@ -63,5 +68,8 @@ export const useCart = () => {
     clearCart,
     total,
     itemCount,
+    isCartOpen,
+    openCart,
+    closeCart,
   };
 };

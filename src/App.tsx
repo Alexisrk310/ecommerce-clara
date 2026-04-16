@@ -22,6 +22,7 @@ import Shop from './pages/Shop';
 import ProductDetails from './pages/ProductDetails';
 import Checkout from './pages/Checkout';
 import Success from './pages/Success';
+import Favorites from './pages/Favorites';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
@@ -74,6 +75,13 @@ const AnimatedRoutes = () => {
           <>
             <Navbar />
             <PageTransition><ProductDetails /></PageTransition>
+            <Footer />
+          </>
+        } />
+        <Route path="/favoritos" element={
+          <>
+            <Navbar />
+            <PageTransition><Favorites /></PageTransition>
             <Footer />
           </>
         } />

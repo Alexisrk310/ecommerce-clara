@@ -10,6 +10,18 @@ const ProductGrid = () => {
   const categoryParam = searchParams.get('category');
   const [activeCategory, setActiveCategory] = useState(categoryParam || 'Todos');
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+
+  useEffect(() => {
+    setIsSearching(true);
+    const handler = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+      setIsSearching(false);
+    }, 500);
+
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
 
   useEffect(() => {
     if (categoryParam) {
@@ -51,10 +63,10 @@ const ProductGrid = () => {
         : (p as any).category || '';
       
       const matchesCategory = activeCategory === 'Todos' || pCategory === activeCategory;
-      const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = p.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, searchQuery, products]);
+  }, [activeCategory, debouncedSearchQuery, products]);
 
   if (loading) {
     return (
@@ -66,18 +78,18 @@ const ProductGrid = () => {
   }
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-10 md:gap-14 px-4 md:px-0">
       {/* Controls */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div className="flex gap-4 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto no-scrollbar">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+        <div className="flex gap-3 overflow-x-auto pb-4 md:pb-0 w-full md:w-auto no-scrollbar scroll-smooth">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-6 py-2 text-xs uppercase tracking-widest transition-luxury border rounded-full whitespace-nowrap ${
+              className={`px-8 py-2.5 text-[10px] uppercase tracking-[0.2em] transition-luxury border rounded-none whitespace-nowrap ${
                 activeCategory === cat
-                  ? 'bg-clara-black text-white border-clara-black'
-                  : 'bg-transparent text-clara-black/50 border-clara-pink-100 hover:border-clara-pink-400'
+                  ? 'bg-clara-black text-white border-clara-black shadow-premium'
+                  : 'bg-transparent text-clara-black/40 border-clara-pink-100/50 hover:border-clara-pink-400 hover:text-clara-black'
               }`}
             >
               {cat}
@@ -98,8 +110,19 @@ const ProductGrid = () => {
       </div>
 
       {/* Grid */}
-      {filteredProducts.length > 0 ? (
+      {isSearching ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={`skeleton-${i}`} className="flex flex-col animate-pulse">
+              <div className="aspect-3/4 bg-clara-gray w-full mb-4"></div>
+              <div className="h-3 bg-clara-gray w-1/3 mb-2"></div>
+              <div className="h-4 bg-clara-gray w-3/4 mb-1"></div>
+              <div className="h-4 bg-clara-gray w-1/4"></div>
+            </div>
+          ))}
+        </div>
+      ) : filteredProducts.length > 0 ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-4 md:gap-x-8 gap-y-10 md:gap-y-12">
           {filteredProducts.map((product) => (
             <ProductCard 
               key={product.id} 
