@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-serif: "Playfair Display", serif;
+  --font-sans: "Outfit", sans-serif;
+  
+  --color-clara-pink-50: #fdf2f8;
+  --color-clara-pink-100: #fce4ec;
+  --color-clara-pink-200: #f8bbd0;
+  --color-clara-pink-300: #f48fb1;
+  --color-clara-pink-400: #f06292;
+  --color-clara-pink-500: #ec407a;
+  --color-clara-black: #1a1a1a;
+  --color-clara-gray: #f8f9fa;
+
+  --shadow-premium: 0 10px 40px rgba(0,0,0,0.04);
+  --shadow-premium-hover: 0 20px 60px rgba(0,0,0,0.08);
+}
+
+:root {
+  font-family: var(--font-sans);
+  background-color: white;
+  color: var(--color-clara-black);
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Custom transitions */
+.transition-luxury {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}

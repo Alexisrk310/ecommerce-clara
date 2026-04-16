@@ -1,0 +1,16 @@
+/**
+ * Formats a number as Colombian Pesos (COP).
+ * Example: 129000 -> $ 129.000
+ */
+export const formatPrice = (price: number | string): string => {
+  const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
+  
+  if (isNaN(numericPrice)) return '$ 0';
+
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(numericPrice);
+};
