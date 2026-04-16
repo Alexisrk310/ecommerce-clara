@@ -86,10 +86,10 @@ const ProductGrid = () => {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-8 py-2.5 text-[10px] uppercase tracking-[0.2em] transition-luxury border rounded-none whitespace-nowrap ${
+              className={`px-8 py-3 text-[10px] uppercase tracking-[0.2em] transition-luxury border whitespace-nowrap font-medium ${
                 activeCategory === cat
                   ? 'bg-clara-black text-white border-clara-black shadow-premium'
-                  : 'bg-transparent text-clara-black/40 border-clara-pink-100/50 hover:border-clara-pink-400 hover:text-clara-black'
+                  : 'bg-white text-clara-black/70 border-clara-black/20 hover:border-clara-black/50 hover:text-clara-black hover:bg-clara-gray'
               }`}
             >
               {cat}
