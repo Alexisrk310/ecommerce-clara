@@ -13,6 +13,7 @@ const ProductDetails = () => {
   const { addToCart } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedSize, setSelectedSize] = useState<string | undefined>();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -21,6 +22,9 @@ const ProductDetails = () => {
         setLoading(true);
         const data = await database.getProductById(id);
         setProduct(data);
+        if (data.sizes && data.sizes.length > 0) {
+          setSelectedSize(data.sizes[0]);
+        }
       } catch (error) {
         console.error('Error fetching product:', error);
         toast.error('No pudimos encontrar el producto solicitado');
@@ -35,9 +39,15 @@ const ProductDetails = () => {
   const handleAddToCart = () => {
     if (!product) return;
     
+    if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+      toast.error('Por favor selecciona una talla');
+      return;
+    }
+    
     // Adapt product to CartItem format
     const cartProduct = {
       ...product,
+      size: selectedSize,
       category: (typeof product.category === 'object' && product.category !== null) 
         ? (product.category as any).name 
         : (product as any).category || 'Sin Categoría'
@@ -131,6 +141,29 @@ const ProductDetails = () => {
                   {product.stock > 0 ? `Disponible (${product.stock} unidades)` : 'Agotado'}
                 </div>
               </div>
+
+              {product.sizes && product.sizes.length > 0 && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-[10px] uppercase tracking-widest font-bold">Seleccionar Talla</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {product.sizes.map(size => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`px-6 py-3 text-[10px] uppercase tracking-widest font-bold border transition-luxury ${
+                          selectedSize === size
+                            ? 'border-clara-black bg-clara-black text-white'
+                            : 'border-clara-black/10 text-clara-black/60 hover:border-clara-black/30 hover:text-clara-black'
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Actions */}

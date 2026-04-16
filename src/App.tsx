@@ -8,6 +8,7 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import PageTransition from './components/layout/PageTransition';
+import FloatingWhatsApp from './components/ui/FloatingWhatsApp';
 
 // Admin Imports
 import AdminLayout from './layouts/AdminLayout';
@@ -124,6 +125,7 @@ function App() {
           <div className="flex flex-col min-h-screen">
             <AnimatedRoutes />
             <Toaster position="bottom-right" />
+            <FloatingWhatsApp />
           </div>
         </Router>
       </CartProvider>

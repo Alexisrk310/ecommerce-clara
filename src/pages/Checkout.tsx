@@ -3,7 +3,7 @@ import { useCart } from '../features/cart/CartContext';
 import { formatPrice } from '../utils/format';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, Truck, ShieldCheck, ChevronRight } from 'lucide-react';
+import { ShieldCheck, ChevronRight } from 'lucide-react';
 
 const Checkout = () => {
   const { cartItems, total } = useCart();
@@ -13,7 +13,7 @@ const Checkout = () => {
     e.preventDefault();
     
     // Construct WhatsApp Message
-    const itemsList = cartItems.map(item => `- ${item.name} (${item.quantity}) x ${formatPrice(item.price)}`).join('%0A');
+    const itemsList = cartItems.map(item => `- ${item.name}${item.size ? ` (Talla: ${item.size})` : ''} (${item.quantity}) x ${formatPrice(item.price)}`).join('%0A');
     const formattedTotal = formatPrice(total);
     const message = `¡Hola Donde Clara! 👋 Quiero realizar un pedido:%0A%0A*Productos:*%0A${itemsList}%0A%0A*Total:* ${formattedTotal}%0A%0A*Mis Datos:*%0A- Nombre: ${(e.target as any).nombre.value}%0A- Dirección: ${(e.target as any).direccion.value}%0A- Barrio: ${(e.target as any).barrio.value}%0A%0A¿Me podrían confirmar la disponibilidad y los pasos para el pago? ✨`;
     
@@ -89,7 +89,7 @@ const Checkout = () => {
                     </div>
                     <div className="flex-grow">
                       <h4 className="text-[10px] font-bold uppercase tracking-wider">{item.name}</h4>
-                      <p className="text-[10px] text-clara-black/40 mt-1">Cant: {item.quantity}</p>
+                      <p className="text-[10px] text-clara-black/40 mt-1">Cant: {item.quantity}{item.size ? ` · Talla: ${item.size}` : ''}</p>
                       <p className="text-xs font-medium mt-1">{formatPrice(item.price * item.quantity)}</p>
                     </div>
                   </div>

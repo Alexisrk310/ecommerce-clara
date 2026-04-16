@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Search, Edit2, Trash2, Tag, Loader2, X } from 'lucide-react';
-import { database, supabase } from '../../api/database';
+import { Plus, Search, Edit2, Trash2, Tag, Loader2 } from 'lucide-react';
+import { database } from '../../api/database';
 import type { Category } from '../../api/database';
 import { toast } from 'react-hot-toast';
 

@@ -16,8 +16,8 @@ export interface Product {
   image: string;
   category_id: string;
   stock: number;
-  featured: boolean;
   active?: boolean;
+  sizes?: string[];
   created_at?: string;
   category?: {
     id: string;

@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import { ShoppingBag, Heart } from 'lucide-react';
-import { cn } from '../../utils/cn';
 import { useCart } from '../../features/cart/CartContext';
 import { toast } from 'react-hot-toast';
 import { formatPrice } from '../../utils/format';

@@ -1,12 +1,23 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../../components/ui/ProductCard';
 import { Search, Loader2 } from 'lucide-react';
 import { database } from '../../api/database';
-import type { Product, Category } from '../../api/database';
+import type { Product } from '../../api/database';
 
 const ProductGrid = () => {
-  const [activeCategory, setActiveCategory] = useState('Todos');
+  const [searchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
+  const [activeCategory, setActiveCategory] = useState(categoryParam || 'Todos');
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    if (categoryParam) {
+      setActiveCategory(categoryParam);
+    } else {
+      setActiveCategory('Todos');
+    }
+  }, [categoryParam]);
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<string[]>(['Todos']);
   const [loading, setLoading] = useState(true);

@@ -23,6 +23,7 @@ const ProductForm = ({ isOpen, onClose, product, onSave }: ProductFormProps) => 
     stock: '',
     featured: false,
     image: '',
+    sizes: '',
   });
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -46,6 +47,7 @@ const ProductForm = ({ isOpen, onClose, product, onSave }: ProductFormProps) => 
           stock: product.stock.toString(),
           featured: product.featured,
           image: product.image,
+          sizes: product.sizes ? product.sizes.join(', ') : '',
         });
         setImagePreview(product.image);
         setImageMode('url');
@@ -58,6 +60,7 @@ const ProductForm = ({ isOpen, onClose, product, onSave }: ProductFormProps) => 
           stock: '',
           featured: false,
           image: '',
+          sizes: '',
         });
         setImagePreview('');
         setImageFile(null);
@@ -141,12 +144,17 @@ const ProductForm = ({ isOpen, onClose, product, onSave }: ProductFormProps) => 
         return;
       }
 
+      const sizesArray = formData.sizes 
+        ? formData.sizes.split(',').map(s => s.trim().toUpperCase()).filter(s => s.length > 0)
+        : [];
+
       await onSave({
         ...formData,
         id: product?.id,
         price: parseFloat(formData.price),
         stock: parseInt(formData.stock),
         image: finalImageUrl,
+        sizes: sizesArray.length > 0 ? sizesArray : [],
       });
 
       toast.success(product ? 'Producto actualizado correctamente' : 'Producto creado correctamente');
@@ -354,6 +362,21 @@ const ProductForm = ({ isOpen, onClose, product, onSave }: ProductFormProps) => 
                       onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
                     />
                   </div>
+                </div>
+
+                {/* Tallas */}
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-clara-black/40">
+                    Tallas (opcional, separadas por coma)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="S, M, L, XL"
+                    className="w-full px-4 py-3 bg-clara-gray border-none focus:ring-1 focus:ring-clara-pink-300 outline-none text-sm uppercase"
+                    value={formData.sizes}
+                    onChange={(e) => setFormData({ ...formData, sizes: e.target.value })}
+                  />
+                  <p className="text-[10px] text-clara-black/40">Ejemplo: S, M, L, XL. Principalmente usado para la categoría de Ropa.</p>
                 </div>
 
                 {/* Description */}

@@ -5,11 +5,13 @@ import { cn } from '../../utils/cn';
 import { useCart } from '../../features/cart/CartContext';
 import CartDrawer from '../../features/cart/CartDrawer';
 import { Link } from 'react-router-dom';
+import { database } from '../../api/database';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [categories, setCategories] = useState<{name: string}[]>([]);
   const { itemCount } = useCart();
 
   useEffect(() => {
@@ -20,10 +22,13 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    database.getCategories().then(data => setCategories(data.slice(0, 4))).catch(console.error);
+  }, []);
+
   const navLinks = [
     { name: 'Catálogo', href: '/catalogo' },
-    { name: 'Ropa', href: '/catalogo?category=ropa' },
-    { name: 'Accesorios', href: '/catalogo?category=accesorios' },
+    ...categories.map(c => ({ name: c.name, href: `/catalogo?category=${encodeURIComponent(c.name)}` }))
   ];
 
   return (

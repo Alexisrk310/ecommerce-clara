@@ -2,7 +2,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Minus, Plus, ShoppingBag, Trash2, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from './CartContext';
-import { cn } from '../../utils/cn';
 import { formatPrice } from '../../utils/format';
 
 interface CartDrawerProps {
@@ -57,25 +56,27 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
                       <div className="flex justify-between items-start">
                         <h3 className="text-sm font-medium pr-8">{item.name}</h3>
                         <button 
-                          onClick={() => removeFromCart(item.id)}
+                          onClick={() => removeFromCart(item.id, item.size)}
                           className="text-clara-black/30 hover:text-red-500 transition-colors"
                         >
                           <Trash2 size={16} />
                         </button>
                       </div>
-                      <p className="text-sm text-clara-black/60 mt-1">{formatPrice(item.price)}</p>
+                      <p className="text-sm text-clara-black/60 mt-1">
+                        {formatPrice(item.price)} {item.size && <span className="ml-2 px-2 py-0.5 bg-clara-pink-50 text-clara-pink-500 text-[10px] rounded uppercase font-bold">Talla: {item.size}</span>}
+                      </p>
                       
                       <div className="mt-auto flex items-center justify-between pt-4">
                         <div className="flex items-center border border-clara-pink-100 rounded-none">
                           <button 
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            onClick={() => updateQuantity(item.id, item.size, item.quantity - 1)}
                             className="p-1 px-2 hover:bg-clara-pink-50 transition-colors"
                           >
                             <Minus size={12} />
                           </button>
                           <span className="w-8 text-center text-xs">{item.quantity}</span>
                           <button 
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            onClick={() => updateQuantity(item.id, item.size, item.quantity + 1)}
                             className="p-1 px-2 hover:bg-clara-pink-50 transition-colors"
                           >
                             <Plus size={12} />

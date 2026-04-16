@@ -1,6 +1,14 @@
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Mail, MapPin } from 'lucide-react';
+import { database } from '../../api/database';
 
 const Footer = () => {
+  const [categories, setCategories] = useState<{name: string}[]>([]);
+
+  useEffect(() => {
+    database.getCategories().then(data => setCategories(data.slice(0, 5))).catch(console.error);
+  }, []);
+
   return (
     <footer className="bg-clara-black text-white pt-20 pb-10">
       <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-white/10 pb-20">
@@ -43,31 +51,23 @@ const Footer = () => {
         <div className="space-y-6">
           <h3 className="text-xs uppercase tracking-[0.3em] font-bold">Colecciones</h3>
           <ul className="space-y-4 text-sm text-white/50">
-            <li><a href="#" className="hover:text-white transition-colors">Nueva Colección</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Bestsellers</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Accesorios Premium</a></li>
-            <li><a href="#" className="hover:text-white transition-colors">Edición Especial</a></li>
+            {categories.map(cat => (
+              <li key={cat.name}><a href={`/catalogo?category=${encodeURIComponent(cat.name)}`} className="hover:text-white transition-colors">{cat.name}</a></li>
+            ))}
           </ul>
         </div>
 
         <div className="space-y-6">
           <h3 className="text-xs uppercase tracking-[0.3em] font-bold">Ubicación</h3>
-          <div className="w-full h-48 bg-clara-gray overflow-hidden grayscale contrast-125 opacity-70 hover:opacity-100 transition-opacity duration-700">
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.181816706788!2d-75.5505822!3d10.4229062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8ef6259960ca330f%3A0x62804f3db6e6900d!2sCentro%20Hist%C3%B3rico%2C%20Cartagena%20de%20Indias%2C%20Bol%C3%ADvar!5e0!3m2!1ses!2sco!4v1713050000000!5m2!1ses!2sco" 
-              width="100%" 
-              height="100%" 
-              style={{ border: 0 }} 
-              allowFullScreen={true} 
-              loading="lazy" 
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Donde Clara Cartagena"
-            />
-          </div>
-          <p className="text-[10px] text-white/40 uppercase tracking-widest mt-2 flex items-center gap-2">
-            <MapPin size={10} />
-            Visítanos en el Centro Histórico
+          <p className="text-sm text-white/50 leading-relaxed font-light">
+            Cartagena De Indias
           </p>
+          <div className="flex flex-col gap-2 mt-4 text-sm text-white/50">
+            <p className="text-[10px] text-white/40 uppercase tracking-widest flex items-center gap-2">
+              <MapPin size={10} />
+              Centro Histórico
+            </p>
+          </div>
         </div>
       </div>
 

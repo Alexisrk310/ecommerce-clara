@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { formatPrice } from '../utils/format';
 import { database } from '../api/database';
 import type { Product } from '../api/database';
@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [featuredProduct, setFeaturedProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchFeatured = async () => {
@@ -20,8 +19,6 @@ const Home = () => {
         }
       } catch (error) {
         console.error('Error fetching featured product:', error);
-      } finally {
-        setLoading(false);
       }
     };
     fetchFeatured();
