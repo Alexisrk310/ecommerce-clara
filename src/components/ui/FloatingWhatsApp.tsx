@@ -1,9 +1,15 @@
 import { MessageCircle } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 const FloatingWhatsApp = () => {
+  const location = useLocation();
   const phoneNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '573013439509';
   const message = 'Hola, estoy interesado en sus productos.';
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+  if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/acceso')) {
+    return null;
+  }
 
   return (
     <a

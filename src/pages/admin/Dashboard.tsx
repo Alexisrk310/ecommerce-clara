@@ -77,21 +77,11 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-white p-8 shadow-premium border border-clara-pink-50">
           <h3 className="font-serif text-lg mb-6">Ventas Recientes</h3>
-          <div className="space-y-4">
-            {[1, 2, 3].map((order) => (
-              <div key={order} className="flex items-center justify-between py-4 border-b border-clara-gray last:border-0">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-clara-pink-50 rounded-full flex items-center justify-center text-clara-pink-500 font-bold text-xs">
-                    #00{order}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Cliente Ejemplo {order}</p>
-                    <p className="text-xs text-clara-black/40">Hace {order * 2} horas</p>
-                  </div>
-                </div>
-                <p className="text-sm font-bold">{formatPrice(129000)}</p>
-              </div>
-            ))}
+          <div className="py-12 flex flex-col items-center justify-center text-center">
+            <ShoppingBag size={48} className="text-clara-pink-100 mb-4" />
+            <p className="text-sm text-clara-black/40 italic font-serif">
+              Aún no hay ventas recientes registradas.
+            </p>
           </div>
         </div>
 

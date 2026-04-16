@@ -68,15 +68,7 @@ const ProductGrid = () => {
     });
   }, [activeCategory, debouncedSearchQuery, products]);
 
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-32 space-y-4">
-        <Loader2 className="w-8 h-8 animate-spin text-clara-pink-500" />
-        <p className="text-xs uppercase tracking-[0.2em] text-clara-black/40">Cargando selección...</p>
-      </div>
-    );
-  }
-
+  // Removed full-screen loader layout
   return (
     <div className="flex flex-col gap-10 md:gap-14 px-4 md:px-0">
       {/* Controls */}
@@ -110,7 +102,7 @@ const ProductGrid = () => {
       </div>
 
       {/* Grid */}
-      {isSearching ? (
+      {loading || isSearching ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={`skeleton-${i}`} className="flex flex-col animate-pulse">

@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 
 const Home = () => {
   const [featuredProduct, setFeaturedProduct] = useState<Product | null>(null);
+  const [loadingFeatured, setLoadingFeatured] = useState(true);
 
   useEffect(() => {
     const fetchFeatured = async () => {
@@ -19,6 +20,8 @@ const Home = () => {
         }
       } catch (error) {
         console.error('Error fetching featured product:', error);
+      } finally {
+        setLoadingFeatured(false);
       }
     };
     fetchFeatured();
@@ -66,25 +69,32 @@ const Home = () => {
             transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
             className="relative aspect-3/4 max-w-md mx-auto"
           >
-            <div className="absolute -inset-4 border border-clara-pink-200 -z-10 translate-x-8 translate-y-8" />
-            <img
-              src={featuredProduct?.image || "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&q=80&w=800"}
-              alt="Premium Fashion Selection"
-              className="w-full h-full object-cover shadow-premium"
-            />
-            
-            {/* Floating Element */}
-            {featuredProduct && (
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-8 -right-8 glass p-6 shadow-premium hidden md:block"
-              >
-                <p className="text-xs uppercase tracking-widest text-clara-pink-500 mb-1">Novedad</p>
-                <p className="text-lg font-serif">{featuredProduct.name}</p>
-                <p className="text-sm font-medium">{formatPrice(featuredProduct.price)}</p>
-                <Link to={`/producto/${featuredProduct.id}`} className="text-[10px] uppercase underline mt-2 inline-block">Ver detalle</Link>
-              </motion.div>
+            {loadingFeatured ? (
+              <div className="w-full h-full bg-clara-gray animate-pulse shadow-premium" />
+            ) : featuredProduct ? (
+              <>
+                <img
+                  src={featuredProduct.image}
+                  alt={featuredProduct.name}
+                  className="w-full h-full object-cover shadow-premium relative z-10"
+                />
+                
+                {/* Floating Element */}
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -bottom-8 -right-8 glass p-6 shadow-premium hidden md:block z-20"
+                >
+                  <p className="text-xs uppercase tracking-widest text-clara-pink-500 mb-1">Novedad</p>
+                  <p className="text-lg font-serif">{featuredProduct.name}</p>
+                  <p className="text-sm font-medium">{formatPrice(featuredProduct.price)}</p>
+                  <Link to={`/producto/${featuredProduct.id}`} className="text-[10px] uppercase underline mt-2 inline-block">Ver detalle</Link>
+                </motion.div>
+              </>
+            ) : (
+              <div className="w-full h-full bg-clara-gray flex items-center justify-center font-serif text-clara-black/40 italic shadow-premium">
+                Nuevas piezas pronto...
+              </div>
             )}
           </motion.div>
         </div>
