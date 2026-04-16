@@ -37,7 +37,9 @@ const Success = () => {
 
           <div className="flex flex-col gap-4 pt-8">
             <a 
-              href="https://wa.me/573000000000" // Use same number
+              href={`https://wa.me/${import.meta.env.VITE_WHATSAPP_NUMBER || '573013439509'}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-8 py-5 bg-emerald-600 text-white text-[10px] uppercase tracking-widest font-bold hover:bg-emerald-700 transition-luxury flex items-center justify-center gap-3 shadow-lg shadow-emerald-900/10"
             >
               Hablar con un asesor ahora <ArrowRight size={14} />

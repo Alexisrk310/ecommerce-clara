@@ -13,7 +13,10 @@ const Checkout = () => {
     e.preventDefault();
     
     // Construct WhatsApp Message
-    const itemsList = cartItems.map(item => `- ${item.name}${item.size ? ` (Talla: ${item.size})` : ''} (${item.quantity}) x ${formatPrice(item.price)}`).join('%0A');
+    const baseUrl = window.location.origin;
+    const itemsList = cartItems.map(item => 
+      `- ${item.name}${item.size ? ` (Talla: ${item.size})` : ''} (${item.quantity}) x ${formatPrice(item.price)}%0A  🔗 ${baseUrl}/producto/${item.id}`
+    ).join('%0A%0A');
     const formattedTotal = formatPrice(total);
     const message = `¡Hola Donde Clara! 👋 Quiero realizar un pedido:%0A%0A*Productos:*%0A${itemsList}%0A%0A*Total:* ${formattedTotal}%0A%0A*Mis Datos:*%0A- Nombre: ${(e.target as any).nombre.value}%0A- Dirección: ${(e.target as any).direccion.value}%0A- Barrio: ${(e.target as any).barrio.value}%0A%0A¿Me podrían confirmar la disponibilidad y los pasos para el pago? ✨`;
     
@@ -40,12 +43,12 @@ const Checkout = () => {
               <div className="space-y-6">
                 <h3 className="text-xs uppercase tracking-[0.3em] font-bold pb-4 border-b">Información de Envío</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input name="nombre" required placeholder="Nombre Completo" className="w-full bg-clara-gray border-none p-4 text-sm outline-none focus:ring-1 focus:ring-clara-pink-300" />
-                  <input name="telefono" required placeholder="Teléfono" className="w-full bg-clara-gray border-none p-4 text-sm outline-none focus:ring-1 focus:ring-clara-pink-300" />
+                  <input name="nombre" placeholder="Nombre Completo (Opcional)" className="w-full bg-clara-gray border-none p-4 text-sm outline-none focus:ring-1 focus:ring-clara-pink-300" />
+                  <input name="telefono" placeholder="Teléfono (Opcional)" className="w-full bg-clara-gray border-none p-4 text-sm outline-none focus:ring-1 focus:ring-clara-pink-300" />
                 </div>
-                <input name="direccion" required placeholder="Dirección en Cartagena" className="w-full bg-clara-gray border-none p-4 text-sm outline-none focus:ring-1 focus:ring-clara-pink-300" />
+                <input name="direccion" placeholder="Dirección en Cartagena (Opcional)" className="w-full bg-clara-gray border-none p-4 text-sm outline-none focus:ring-1 focus:ring-clara-pink-300" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <input name="barrio" required placeholder="Barrio / Edificio" className="w-full bg-clara-gray border-none p-4 text-sm outline-none focus:ring-1 focus:ring-clara-pink-300" />
+                  <input name="barrio" placeholder="Barrio / Edificio (Opcional)" className="w-full bg-clara-gray border-none p-4 text-sm outline-none focus:ring-1 focus:ring-clara-pink-300" />
                   <input name="notas" placeholder="Notas adicionales" className="w-full bg-clara-gray border-none p-4 text-sm outline-none focus:ring-1 focus:ring-clara-pink-300" />
                 </div>
               </div>

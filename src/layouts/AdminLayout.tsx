@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Package, Tag, LogOut, ChevronLeft, Store } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { useAuth } from '../features/auth/AuthContext';
 import { toast } from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { ReactNode } from 'react';
 
 interface AdminLayoutProps {
@@ -12,11 +14,13 @@ interface AdminLayoutProps {
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const [isConfirmingLogout, setIsConfirmingLogout] = useState(false);
 
   const handleSignOut = async () => {
     try {
       await signOut();
       toast.success('Sesión cerrada correctamente');
+      setIsConfirmingLogout(false);
       navigate('/acceso');
     } catch (error) {
       toast.error('Error al cerrar sesión');
@@ -71,7 +75,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             Ir a la Tienda
           </Link>
           <button 
-            onClick={handleSignOut}
+            onClick={() => setIsConfirmingLogout(true)}
             className="flex items-center gap-3 px-4 py-3 text-sm text-white/60 hover:text-white w-full transition-colors group"
           >
             <LogOut size={18} className="group-hover:translate-x-1 transition-transform" />
@@ -94,6 +98,50 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
           {children}
         </div>
       </main>
+
+      {/* Logout Confirmation Modal */}
+      <AnimatePresence>
+        {isConfirmingLogout && (
+          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsConfirmingLogout(false)}
+              className="absolute inset-0 bg-clara-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative bg-white p-8 w-full max-w-sm shadow-premium text-center border-t-4 border-clara-pink-500"
+            >
+              <div className="mx-auto w-12 h-12 bg-clara-pink-50 text-clara-pink-500 rounded-full flex items-center justify-center mb-4">
+                <LogOut size={24} />
+              </div>
+              <h3 className="text-xl font-serif mb-2">¿Cerrar sesión?</h3>
+              <p className="text-sm text-clara-black/60 mb-8">
+                Tendrás que volver a ingresar tus credenciales para acceder al panel.
+              </p>
+              
+              <div className="flex gap-4">
+                <button 
+                  onClick={() => setIsConfirmingLogout(false)}
+                  className="flex-1 py-3 border border-clara-black/10 text-[10px] uppercase tracking-widest font-bold hover:bg-clara-gray transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button 
+                  onClick={handleSignOut}
+                  className="flex-1 py-3 bg-clara-black text-white text-[10px] uppercase tracking-widest font-bold hover:bg-clara-pink-500 transition-luxury"
+                >
+                  Salir
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
