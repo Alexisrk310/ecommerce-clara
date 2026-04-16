@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ProductGrid from '../features/catalog/ProductGrid';
 
 const Shop = () => {

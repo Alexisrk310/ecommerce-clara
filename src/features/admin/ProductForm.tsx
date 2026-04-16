@@ -47,7 +47,7 @@ const ProductForm = ({ isOpen, onClose, product, onSave }: ProductFormProps) => 
           category_id: product.category_id,
           description: product.description,
           stock: product.stock.toString(),
-          featured: product.featured,
+          featured: product.featured || false,
           image: product.image,
           sizes: product.sizes ? product.sizes.join(', ') : '',
         });
